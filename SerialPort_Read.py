@@ -2,11 +2,7 @@
 # Also my first program in python. Wow! Awsome!
 
 import time
-
 import serial
-
-startWord = "Start"
-
 
 def calcAverageTemp(mylist):
     length = len(mylist)
@@ -17,7 +13,7 @@ def calcAverageTemp(mylist):
         avgTemp = sumList / (length)
         return avgTemp;
 
-
+startWord = "Start"
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
 
@@ -29,7 +25,7 @@ voltage2 = []
 batteryVoltage = []
 frameCounter = 0
 
-for i in range(50):
+for i in range(500):
     readVal = arduinoSerialPort.readline()  ##read value
     print("Reading value:", readVal)
 
@@ -65,5 +61,7 @@ for i in range(50):
 
 
 arduinoSerialPort.close()
-print("Calc average temperature")
-print("AvgTemp:", calcAverageTemp(internalTemperature))
+print("Average temperature:", calcAverageTemp(internalTemperature))
+print("Average 1st motor voltage:", calcAverageTemp(voltage1))
+print("Average 2nd motor voltage:", calcAverageTemp(voltage2))
+print("Average main battery voltage:", calcAverageTemp(batteryVoltage))
