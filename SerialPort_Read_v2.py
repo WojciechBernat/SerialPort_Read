@@ -14,7 +14,7 @@ batteryBuffer = []
 
 
 ##Functions
-def detectBeginTransmission(List, startCommand):
+def detectBeginTransmission(List: object, startCommand: object) -> object:
     if ((List[0]) == startCommand):
         print("Detected transmission's command.")
         return 1;
@@ -56,15 +56,8 @@ def readSerialPort(serialPortObject, serialPortBuffer):
 
 ##Init
 arduinoSerialPort = serial.Serial('COM3', 115200)
-##Start
-if (arduinoSerialPort.isOpen() == False):
-    arduinoSerialPort.open()
 
-for i in range(6):
-    # start reading to buffer
-    arduinoSerialPortBuffer.append(arduinoSerialPort.read_until('\n', 6))  # read and append to buffer
-##End
-arduinoSerialPort.close()
+readSerialPort(arduinoSerialPort, arduinoSerialPortBuffer)
 
 detectBeginTransmission(arduinoSerialPortBuffer, arduinoBeginCmd)
 print("Buffer: ", arduinoSerialPortBuffer)
