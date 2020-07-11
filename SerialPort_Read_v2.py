@@ -57,13 +57,20 @@ def readSerialPort(serialPortObject, serialPortBuffer):
 ##Init
 arduinoSerialPort = serial.Serial('COM3', 115200)
 
-readSerialPort(arduinoSerialPort, arduinoSerialPortBuffer)
+#reading loop
+for i in range(50):
+    # reading
+    readSerialPort(arduinoSerialPort, arduinoSerialPortBuffer)
 
-detectBeginTransmission(arduinoSerialPortBuffer, arduinoBeginCmd)
-print("Buffer: ", arduinoSerialPortBuffer)
-print("Buffer's length: ", len(arduinoSerialPortBuffer))
-
-decodeFrame(arduinoSerialPortBuffer, temperatureBuffer, voltageBuffer_1,voltageBuffer_2, batteryBuffer)
+    #detect start sign
+    if (detectBeginTransmission(arduinoSerialPortBuffer, arduinoBeginCmd)):
+        print("Buffer: ", arduinoSerialPortBuffer)
+        print("Buffer's length: ", len(arduinoSerialPortBuffer))
+        #deocde frame
+        decodeFrame(arduinoSerialPortBuffer, temperatureBuffer, voltageBuffer_1, voltageBuffer_2, batteryBuffer)
+    #clear buffer for new data
+    arduinoSerialPortBuffer.clear()
+    print("Buffer: ", arduinoSerialPortBuffer)
 
 
 
