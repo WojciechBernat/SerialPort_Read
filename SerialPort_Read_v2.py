@@ -81,6 +81,9 @@ for i in range(50):
     arduinoSerialPortBuffer.clear()
     print("Buffer: ", arduinoSerialPortBuffer)
 
+
+arduinoSerialPort.close()
+
 print("Average temperature:", calcAverageTemp(temperatureBuffer))
 print("Average 1st voltage:", voltageBuffer_1)
 print("Average 2nd voltage:" , voltageBuffer_2)
