@@ -53,6 +53,15 @@ def readSerialPort(serialPortObject, serialPortBuffer):
     serialPortObject.close()
     ##End
 
+def calcAverageTemp(mylist):
+    length = len(mylist)
+    if(length <= 0):
+        return -1
+    else :
+        sumList = sum(mylist)
+        avgTemp = sumList / (length)
+        return avgTemp;
+
 
 ##Init
 arduinoSerialPort = serial.Serial('COM3', 115200)
@@ -72,7 +81,10 @@ for i in range(50):
     arduinoSerialPortBuffer.clear()
     print("Buffer: ", arduinoSerialPortBuffer)
 
-
+print("Average temperature:", calcAverageTemp(temperatureBuffer))
+print("Average 1st voltage:", voltageBuffer_1)
+print("Average 2nd voltage:" , voltageBuffer_2)
+print("Average battery voltage:", batteryBuffer)
 
 
 
