@@ -2,19 +2,55 @@ import time
 import serial
 
 arduinoSerialPortBuffer = []
-arduinoBeginCmd = b'2766\r\n'
-arduinoEndCmd   = b'3039\r\n'
-arduinoTelemetryCmd = b'2730\r\n' ##HEX:AAA
+arduinoSerialReadingBuffer = []
+arduinoBeginCmd = '2766\n'
+arduinoEndCmd   = '3039\n'
+arduinoTelemetryCmd = '2730\n' ##HEX:AAA
 
+byteToRead = 0
+wrTimeOut = 0.1
+deadTimeOut = 0.5
 
 ##Init
-arduinoSerialPort = serial.Serial('COM3', 115200)
+arduinoSerialPort = serial.Serial('COM3', 115200,timeout=0.1, write_timeout=0.1)
 
 for i in range(50):
-    arduinoSerialPort.write(arduinoBeginCmd)
-    time.sleep(1)
-    arduinoSerialPort.write(arduinoTelemetryCmd)
-    time.sleep(1)
-    arduinoSerialPort.write(arduinoEndCmd )
-    time.sleep(1)
+    print("First command:", arduinoBeginCmd)
+    arduinoSerialPort.write(bytearray(arduinoBeginCmd, 'utf-8'))
+    # time.sleep(0.1)
+    time.sleep(wrTimeOut)
+    byteToRead = arduinoSerialPort.inWaiting()
+    arduinoSerialReadingBuffer[:]
+    arduinoSerialReadingBuffer = arduinoSerialPort.read(byteToRead)
+
+    if arduinoSerialReadingBuffer:
+        print("read:" , arduinoSerialReadingBuffer)
+
+    arduinoSerialReadingBuffer[:]
+    time.sleep(deadTimeOut)
+
+    print("Second command: " , arduinoTelemetryCmd)
+    arduinoSerialPort.write(bytearray(arduinoTelemetryCmd, 'utf-8'))
+    # time.sleep(0.1)
+    time.sleep(wrTimeOut)
+    arduinoSerialReadingBuffer[:]
+    arduinoSerialReadingBuffer = arduinoSerialPort.readline()
+
+    if arduinoSerialReadingBuffer:
+        print("read:" , arduinoSerialReadingBuffer)
+
+    arduinoSerialReadingBuffer[:]
+    time.sleep(deadTimeOut)
+
+    print("Third command: " , arduinoEndCmd)
+    arduinoSerialPort.write(bytearray(arduinoEndCmd, 'utf-8'))
+    time.sleep(wrTimeOut)
+    arduinoSerialReadingBuffer = arduinoSerialPort.readline()
+
+    if arduinoSerialReadingBuffer:
+        print("read:", arduinoSerialReadingBuffer)
+
+
+    time.sleep(deadTimeOut)
+
 arduinoSerialPort.close()
