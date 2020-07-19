@@ -1,6 +1,7 @@
 import time
 
 import serial
+import serial.tools.list_ports
 
 arduinoSerialReadingBuffer = []
 arduinoBeginCmd = '2766\n'
@@ -10,6 +11,12 @@ arduinoTelemetryCmd = '2730\n'  ##HEX:AAA
 byteToRead = 0
 readWriteTimeOut = 1.5
 deadTimeOut = 1
+
+temperatureBuffer = []
+voltageBuffer_1 = []
+voltageBuffer_2 = []
+batteryBuffer = []
+telemetryBuffer = [temperatureBuffer, voltageBuffer_1, voltageBuffer_2, batteryBuffer]
 
 
 def executeCommand(serialPortInstance, cmd, readBuffer, readWriteTimeOut):
@@ -28,7 +35,14 @@ def executeCommand(serialPortInstance, cmd, readBuffer, readWriteTimeOut):
     serialPortInstance.flush()
     time.sleep(readWriteTimeOut)  # Dead time between write command and read slave's response
 
-    readBuffer.append(serialPortInstance.read_until('\n', 150))
+    # readBuffer.append(serialPortInstance.read_until('\n', 32))
+
+    if cmd == arduinoTelemetryCmd:
+        for x in range(4):
+            readBuffer.append(serialPortInstance.readline())
+    else:
+        readBuffer.append(serialPortInstance.readline())
+
     if readBuffer:
         print("Read buffer: ", readBuffer)
 
@@ -59,16 +73,92 @@ def clearBuffer(buffer):
     # End
 
 
+def pickOutSerialPort(deviceName, logFlag=1):
+    # Begin
+    portInfo = findArduino(deviceName, logFlag)
+
+    if portInfo != -1:
+        if logFlag:
+            print(portInfo)
+            print(portInfo[0])
+        return portInfo[0]
+    else:
+        return -1
+    # End
+
+
+def findArduino(deviceName, logFlag=0):
+    # Begin
+    if logFlag:
+        try:
+            portList = [list(p) for p in list(serial.tools.list_ports.comports())]  ##Find serial port in use
+            portList = list(portList)  ##converet to list - each item is list of single serial port
+
+            arduinoPort = findArduinoPort(deviceName, portList)  #############3
+
+            if arduinoPort == -1:
+                raise ValueError("Returned incorrect value.")
+        except ValueError:
+            print("ValueError: no sought serial port detected.")
+        finally:
+            print("Found port:", arduinoPort)  # print log
+            return arduinoPort
+    else:
+        try:
+            portList = [list(p) for p in list(serial.tools.list_ports.comports())]  ##Find serial port in use
+            portList = list(portList)  ##converet to list - each item is list of single serial port
+
+            arduinoPort = findArduinoPort(deviceName, portList)  #############
+
+            if arduinoPort == -1:
+                raise ValueError("Returned incorrect value.")
+        except ValueError:
+            print("ValueError: no serial port detected.")
+        finally:
+            return arduinoPort
+    # End
+
+
+def findArduinoPort(deviceName, argList):
+    # Begin
+    for i in argList:
+
+        for j in i:
+            if (j.find(deviceName) != -1):
+                return i
+
+    return -1
+    # end
+
+
+def calcAverageTemp(mylist):
+    length = len(mylist)
+    if (length <= 0):
+        return -1
+    else:
+        sumList = sum(mylist)
+        avgTemp = sumList / (length)
+        return avgTemp;
+
+def decodeStringToFloat(sourceList):
+    destinyList = [float(i) for i in sourceList]
+#    print("Destiny list: ", destinyList)
+    return destinyList;
+
 ##Init
-arduinoSerialPort = serial.Serial('COM3', 115200, timeout=0.2, write_timeout=0.2)
-
+arduinoSerialPort = serial.Serial(pickOutSerialPort("Arduino Uno"), 115200, timeout=0.2, write_timeout=0.2)
 
 executeCommand(arduinoSerialPort, arduinoBeginCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
-executeCommand(arduinoSerialPort, arduinoEndCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
-executeCommand(arduinoSerialPort, arduinoTelemetryCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
-executeCommand(arduinoSerialPort, arduinoBeginCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
-executeCommand(arduinoSerialPort, arduinoEndCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
-executeCommand(arduinoSerialPort, arduinoTelemetryCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
 
+for i in range(8):
+    executeCommand(arduinoSerialPort, arduinoTelemetryCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
+    for j in range(len(telemetryBuffer)):
+        telemetryBuffer[j].append(arduinoSerialReadingBuffer[j])
 
+print(telemetryBuffer)
+
+executeCommand(arduinoSerialPort, arduinoEndCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
+
+for j in range(len(telemetryBuffer)):
+    print(calcAverageTemp(decodeStringToFloat(telemetryBuffer[j])))
 arduinoSerialPort.close()
