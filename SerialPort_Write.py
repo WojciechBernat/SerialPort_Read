@@ -8,7 +8,7 @@ arduinoEndCmd = '3039\n'
 arduinoTelemetryCmd = '2730\n'  ##HEX:AAA
 
 byteToRead = 0
-readWriteTimeOut = 0.1
+readWriteTimeOut = 1.5
 deadTimeOut = 1
 
 
@@ -25,13 +25,9 @@ def executeCommand(serialPortInstance, cmd, readBuffer, readWriteTimeOut):
     clearBuffer(readBuffer)  # preclear buffer
 
     serialPortInstance.write(bytearray(cmd, 'utf-8'))  ##Send command to slave
+    serialPortInstance.flush()
     time.sleep(readWriteTimeOut)  # Dead time between write command and read slave's response
-    # read response
-    # if (cmd == arduinoTelemetryCmd):
-    #     for i in range(4):
-    #         readToBuffer(readBuffer, serialPortInstance)
-    # else:
-    #     readToBuffer(readBuffer, serialPortInstance)
+
     readBuffer.append(serialPortInstance.read_until('\n', 150))
     if readBuffer:
         print("Read buffer: ", readBuffer)
@@ -64,49 +60,15 @@ def clearBuffer(buffer):
 
 
 ##Init
-arduinoSerialPort = serial.Serial('COM3', 115200, timeout=1.49, write_timeout=0.1)
+arduinoSerialPort = serial.Serial('COM3', 115200, timeout=0.2, write_timeout=0.2)
 
-arduinoSerialPort.write(bytearray(arduinoTelemetryCmd, 'utf-8'))  ##Send command to slave
-time.sleep(readWriteTimeOut)  # Dead time between write command and read slave's response
-arduinoSerialReadingBuffer.append(arduinoSerialPort.read())
 
+executeCommand(arduinoSerialPort, arduinoBeginCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
+executeCommand(arduinoSerialPort, arduinoEndCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
+executeCommand(arduinoSerialPort, arduinoTelemetryCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
+executeCommand(arduinoSerialPort, arduinoBeginCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
+executeCommand(arduinoSerialPort, arduinoEndCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
 executeCommand(arduinoSerialPort, arduinoTelemetryCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
 
-# for i in range(50):
-#     print("First command:", arduinoBeginCmd)
-#     arduinoSerialPort.write(bytearray(arduinoBeginCmd, 'utf-8'))
-#     time.sleep(wrTimeOut)
-#     byteToRead = arduinoSerialPort.inWaiting()
-#     arduinoSerialReadingBuffer[:]
-#     arduinoSerialReadingBuffer = arduinoSerialPort.read(byteToRead)
-#     arduinoSerialReadingBuffer = arduinoSerialPort.readline()
-#     if arduinoSerialReadingBuffer:
-#         print("read:", arduinoSerialReadingBuffer)
-#
-#     arduinoSerialReadingBuffer[:]
-#     time.sleep(deadTimeOut)
-#
-#     print("Second command: ", arduinoTelemetryCmd)
-#     arduinoSerialPort.write(bytearray(arduinoTelemetryCmd, 'utf-8'))
-#     # time.sleep(0.1)
-#     time.sleep(wrTimeOut)
-#     arduinoSerialReadingBuffer[:]
-#     arduinoSerialReadingBuffer = arduinoSerialPort.readline()
-#
-#     if arduinoSerialReadingBuffer:
-#         print("read:", arduinoSerialReadingBuffer)
-#
-#     arduinoSerialReadingBuffer[:]
-#     time.sleep(deadTimeOut)
-#
-#     print("Third command: ", arduinoEndCmd)
-#     arduinoSerialPort.write(bytearray(arduinoEndCmd, 'utf-8'))
-#     time.sleep(wrTimeOut)
-#     arduinoSerialReadingBuffer = arduinoSerialPort.readline()
-#
-#     if arduinoSerialReadingBuffer:
-#         print("read:", arduinoSerialReadingBuffer)
-#
-#     time.sleep(deadTimeOut)
 
 arduinoSerialPort.close()
