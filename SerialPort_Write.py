@@ -131,34 +131,53 @@ def findArduinoPort(deviceName, argList):
     # end
 
 
-def calcAverageTemp(mylist):
-    length = len(mylist)
+def calcAverage(sourceList):
+    if (sourceList == None):
+        return -1;
+    length = len(sourceList)
     if (length <= 0):
         return -1
     else:
-        sumList = sum(mylist)
+        sumList = sum(sourceList)
         avgTemp = sumList / (length)
         return avgTemp;
 
+
 def decodeStringToFloat(sourceList):
-    destinyList = [float(i) for i in sourceList]
-#    print("Destiny list: ", destinyList)
-    return destinyList;
+    if (sourceList == None):
+        return -1;
+    else:
+        destinyList = [float(i) for i in sourceList]
+        #    print("Destiny list: ", destinyList)
+        return destinyList
+
+
+    # if (type(sourceList) == list):
+    #     for i in sourceList:
+    #         destinyList = float(i)
+    #     #    print("Destiny list: ", destinyList)
+    #     return destinyList;
+    # else:
+    #     destinyList = float(sourceList)
+    # #    print("Destiny list: ", destinyList)
+    #     return destinyList;
+
 
 ##Init
 arduinoSerialPort = serial.Serial(pickOutSerialPort("Arduino Uno"), 115200, timeout=0.2, write_timeout=0.2)
 
 executeCommand(arduinoSerialPort, arduinoBeginCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
 
-for i in range(8):
+for i in range(3):
     executeCommand(arduinoSerialPort, arduinoTelemetryCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
     for j in range(len(telemetryBuffer)):
         telemetryBuffer[j].append(arduinoSerialReadingBuffer[j])
 
-print(telemetryBuffer)
-
+# print(telemetryBuffer)
 executeCommand(arduinoSerialPort, arduinoEndCmd, arduinoSerialReadingBuffer, readWriteTimeOut)
 
+
 for j in range(len(telemetryBuffer)):
-    print(calcAverageTemp(decodeStringToFloat(telemetryBuffer[j])))
+    print(calcAverage(decodeStringToFloat(telemetryBuffer[j])))
+
 arduinoSerialPort.close()
