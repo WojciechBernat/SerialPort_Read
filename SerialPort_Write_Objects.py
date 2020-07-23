@@ -33,6 +33,12 @@ class SpecSerialPort:
         for i, j in self._commandList.items():
             print("Hex code: {0}, Name: {1}".format( hex(i), j))
 
+    def addCommand(self, newCmdName):
+        if type(newCmdName) != str:
+            newCmdName = str(newCmdName)
+        __newCmdKey = list(self._commandList.keys())[-1]
+        __newCmdKey += 1
+        self._commandList[__newCmdKey] = newCmdName
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
 test_object = SpecSerialPort(arduinoSerialPort)
@@ -43,4 +49,7 @@ test_object = SpecSerialPort(arduinoSerialPort)
 test_object.initLog()
 test_object.printReadingBuffer()
 test_object.printWritingBuffer()
+
+test_object.printCommandDictionary()
+test_object.addCommand("GetTemp")
 test_object.printCommandDictionary()
