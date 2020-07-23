@@ -3,7 +3,7 @@ import serial
 #import serial.tools.list_ports
 
 
-class serialPort:
+class SpecSerialPort:
     #constructor - init pyserial class
     # default:
     # port: None
@@ -26,7 +26,7 @@ class serialPort:
         print("Writing Buffer content: " + str(self._writeBuffer))
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
-test_object = serialPort(arduinoSerialPort)
+test_object = SpecSerialPort(arduinoSerialPort)
 
 # print("Serial port class" + str(arduinoSerialPort))
 # print("General serial port object: " + str(test_object))
