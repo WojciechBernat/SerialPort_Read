@@ -10,46 +10,71 @@ class SpecSerialPort:
     # baudrate = 115200
     # the rest by default
 
-    _commandList ={0xAAA: "BeginCmd",
-                  0xAAB: "EndCmd",
-                  0xAAC: "TelemetryCmd"}
+    __commandList ={0xAAA: "BeginCmd",
+                    0xAAB: "EndCmd",
+                    0xAAC: "TelemetryCmd"}
+
+    __rwTimeOut = 1.5
 
     def __init__(self, _serialClass = serial.Serial(None, 115200) ):
         self._serialClass = _serialClass  #serial port class from PySerial
-        self._writeBuffer = []
-        self._readingBuffer = []
+        self.__writeBuffer = []
+        self.__readingBuffer = []
 
     # print logs function
     def initLog(self):
         print("Passed serial port object: " + str(self._serialClass))
 
-    def printReadingBuffer(self):
-        print("Reading Buffer content: " + str(self._readingBuffer))
+    @property
+    def getReadingBuffer(self):
+        print("Reading Buffer content: " + str(self.__readingBuffer))
 
-    def printWritingBuffer(self):
-        print("Writing Buffer content: " + str(self._writeBuffer))
+    @property
+    def getWritingBuffer(self):
+        print("Writing Buffer content: " + str(self.__writeBuffer))
 
-    def printCommandDictionary(self):
-        for i, j in self._commandList.items():
-            print("Hex code: {0}, Name: {1}".format( hex(i), j))
+    @property
+    def getCommandDictionary(self):
+        for i, j in self.__commandList.items():
+            print("Hex code: {0}, Name: {1}".format(hex(i), j))
 
     def addCommand(self, newCmdName):
         if type(newCmdName) != str:
             newCmdName = str(newCmdName)
-        __newCmdKey = list(self._commandList.keys())[-1]
+        __newCmdKey = list(self.__commandList.keys())[-1]
         __newCmdKey += 1
-        self._commandList[__newCmdKey] = newCmdName
+        self.__commandList[__newCmdKey] = newCmdName
+
+    def removeCommand(self, cmdName):
+        if type(cmdName) != str:
+            cmdName = str(cmdName)
+
+        notFoundCounter = 0;
+        dictLen = len(self.__commandList)
+        for key,val in self.__commandList.items():
+            if val == cmdName:
+                print("Found command to remove. \nKey: {0}, Name: {1}".format( str(key), str(val)))
+                self.__commandList.pop(key)
+                break #break loop executing - found command to remove
+
+            notFoundCounter += 1
+            if notFoundCounter == (dictLen):
+                print("Command to remove not found.")
+                break  # break loop - command not found
+
+
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
 test_object = SpecSerialPort(arduinoSerialPort)
 
-# print("Serial port class" + str(arduinoSerialPort))
-# print("General serial port object: " + str(test_object))
-
 test_object.initLog()
-test_object.printReadingBuffer()
-test_object.printWritingBuffer()
+test_object.getReadingBuffer
+test_object.getWritingBuffer
 
-test_object.printCommandDictionary()
+test_object.getCommandDictionary
 test_object.addCommand("GetTemp")
-test_object.printCommandDictionary()
+print("After add new command")
+test_object.getCommandDictionary
+print("After remove")
+test_object.removeCommand("GetTemp")
+test_object.getCommandDictionary
