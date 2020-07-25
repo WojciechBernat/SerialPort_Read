@@ -1,0 +1,135 @@
+import time
+#import serial.tools.list_ports
+import serial
+
+class SpecialSerialPort:
+    #constructor - init pyserial class
+    # default:
+    # port: None
+    # baudrate = 115200
+    # the rest by default
+
+    __commandList ={0xAAA: "BeginCmd",
+                    0xAAB: "EndCmd",
+                    0xAAC: "TelemetryCmd"}
+    __rwTimeOut = 1
+
+    def __init__(self, _serialClass = serial.Serial(None, 115200) ):
+        self._serialClass = _serialClass  #serial port class from PySerial
+        self.__writeBuffer = []
+        self.__readingBuffer = []
+        self.__mainDataBuffer = []
+
+    #main data buffer in place where date will be copy after receive
+    #in this array you can add your specify buffer.
+    # i.e. __mainDataBuffer = [temperature, voltage, speed, preasure]
+
+    # print logs function
+    def initLog(self):
+        print("Passed serial port object: " + str(self._serialClass))
+
+    #reading buffer
+    @property
+    def readingBuffer(self):
+        return self.__readingBuffer
+        print("Reading Buffer content: " + str(self.__readingBuffer))
+
+    @readingBuffer.getter
+    def readingBuffer(self):
+        print("Reading Buffer content: " + str(self.__readingBuffer))
+
+    @readingBuffer.setter
+    def readingBuffer(self, data):
+        self.__readingBuffer.append(data)
+
+    @readingBuffer.setter
+    def readingBuffer(self):
+        self.__readingBuffer.clear()
+
+    #writing buffer
+    @property
+    def writtingBuffer(self):
+        return self.__writeBuffer
+
+    @writtingBuffer.getter
+    def writtingBuffer(self):
+        print("Writting Buffer content: " + str(self.__writeBuffer))
+
+    @writtingBuffer.setter
+    def writtingBuffer(self, data):
+        self.__writeBuffer.append(data)
+
+    @writtingBuffer.deleter
+    def writtingBuffer(self):
+        self.__writeBuffer.clear()
+
+    ##main data buffer
+    @property
+    def mainDataBuffer(self):
+        return self.__mainDataBuffer
+
+    @mainDataBuffer.getter
+    def mainDataBuffer(self):
+        print("Main data buffer content: " + str(self.__mainDataBuffer))
+
+    @mainDataBuffer.setter
+    def mainDataBuffer(self, arg):
+        return self.__mainDataBuffer.append(arg)
+
+    @mainDataBuffer.deleter
+    def mainDataBuffer(self):
+        return self.__mainDataBuffer.clear()
+
+    #command's dictionary
+    @property
+    def commandDictionary(self):
+        print(self.__commandList)
+
+    @commandDictionary.getter
+    def commandDictionary(self):
+        for i, j in self.__commandList.items():
+            print("Hex code: {0}, Name: {1}".format(hex(i), j))
+
+    @commandDictionary.setter
+    def commandDictionary(self, newCmdName):
+        if type(newCmdName) != str:
+            newCmdName = str(newCmdName)
+        __newCmdKey = list(self.__commandList.keys())[-1]
+        __newCmdKey += 1
+        self.__commandList[__newCmdKey] = newCmdName
+
+    def removeCommand(self, cmdName):
+        if type(cmdName) != str:
+            cmdName = str(cmdName)
+
+        notFoundCounter = 0;
+        dictLen = len(self.__commandList)
+        for key,val in self.__commandList.items():
+            if val == cmdName:
+                print("Found command to remove. \nKey: {0}, Name: {1}".format( str(key), str(val)))
+                self.__commandList.pop(key)
+                break #break loop executing - found command to remove
+
+            notFoundCounter += 1
+            if notFoundCounter == (dictLen):
+                print("Command to remove not found.")
+                break  # break loop - command not found
+
+    #Read/Write time out
+    @property
+    def readWriteTimeOut(self):
+        return self.__rwTimeOut
+
+    @readWriteTimeOut.getter
+    def readWriteTimeOut(self):
+        print("Read/Write time out: " + str(self.__rwTimeOut))
+
+    @readWriteTimeOut.setter
+    def readWriteTimeOut(self, timeout):
+        try:
+            if (timeout < 0):
+                raise ValueError
+            else:
+                self.__rwTimeOut = timeout
+        except ValueError:
+            print("Invalid time out value. \nValue less than 0!")
