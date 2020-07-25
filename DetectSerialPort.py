@@ -62,9 +62,3 @@ class DetectSerialPort:
                 return portInfo[0]
         except ValueError:
             print("Port you are looking for was not found.")
-
-
-
-test = DetectSerialPort()
-print(test)
-test.detectPort("Arduino")
