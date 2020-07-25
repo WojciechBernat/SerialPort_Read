@@ -62,19 +62,23 @@ class SpecSerialPort:
                 print("Command to remove not found.")
                 break  # break loop - command not found
 
+    @property
+    def getReadWriteTimeOut(self):
+        print("Read/Write time out: " + str(self.__rwTimeOut))
 
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
 test_object = SpecSerialPort(arduinoSerialPort)
 
-test_object.initLog()
-test_object.getReadingBuffer
-test_object.getWritingBuffer
-
-test_object.getCommandDictionary
-test_object.addCommand("GetTemp")
-print("After add new command")
-test_object.getCommandDictionary
-print("After remove")
-test_object.removeCommand("GetTemp")
-test_object.getCommandDictionary
+# test_object.initLog()
+# test_object.getReadingBuffer
+# test_object.getWritingBuffer
+#
+# test_object.getCommandDictionary
+# test_object.addCommand("GetTemp")
+# print("After add new command")
+# test_object.getCommandDictionary
+# print("After remove")
+# test_object.removeCommand("GetTemp")
+# test_object.getCommandDictionary
+test_object.getReadWriteTimeOut
