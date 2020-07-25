@@ -26,12 +26,29 @@ class SpecSerialPort:
         print("Passed serial port object: " + str(self._serialClass))
 
     @property
-    def getReadingBuffer(self):
+    def ReadingBuffer(self):
+        return self.__readingBuffer
         print("Reading Buffer content: " + str(self.__readingBuffer))
 
+    @ReadingBuffer.getter
+    def readingBuffer(self):
+        print("Reading Buffer content: " + str(self.__readingBuffer))
+
+    @readingBuffer.setter
+    def readingBuffer(self, data):
+        self.__readingBuffer.append(data)
+
     @property
-    def getWritingBuffer(self):
+    def WritingBuffer(self):
+        return self.__writeBuffer
+
+    @WritingBuffer.getter
+    def writingBuffer(self):
         print("Writing Buffer content: " + str(self.__writeBuffer))
+
+    @writingBuffer.setter
+    def writingBuffer(self, data):
+        self.__writeBuffer.append(data)
 
     @property
     def getCommandDictionary(self):
@@ -63,15 +80,15 @@ class SpecSerialPort:
                 break  # break loop - command not found
 
     @property
-    def ReadWriteTimeOut(self):
+    def readWriteTimeOut(self):
         return self.__rwTimeOut
 
-    @ReadWriteTimeOut.getter
-    def ReadWriteTimeOut(self):
+    @readWriteTimeOut.getter
+    def readWriteTimeOut(self):
         print("Read/Write time out: " + str(self.__rwTimeOut))
 
-    @ReadWriteTimeOut.setter
-    def ReadWriteTimeOut(self, timeout):
+    @readWriteTimeOut.setter
+    def readWriteTimeOut(self, timeout):
         try:
             if (timeout < 0):
                 raise ValueError
@@ -95,6 +112,14 @@ test_object = SpecSerialPort(arduinoSerialPort)
 # print("After remove")
 # test_object.removeCommand("GetTemp")
 # test_object.getCommandDictionary
-test_object.ReadWriteTimeOut
-test_object.ReadWriteTimeOut = -100
-test_object.ReadWriteTimeOut
+# test_object.ReadWriteTimeOut
+# test_object.ReadWriteTimeOut = -100
+# test_object.ReadWriteTimeOut
+
+test_object.readingBuffer
+test_object.readingBuffer = 10
+test_object.readingBuffer
+
+test_object.writingBuffer
+test_object.writingBuffer = 100
+test_object.writingBuffer
