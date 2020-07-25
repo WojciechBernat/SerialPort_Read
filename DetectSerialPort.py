@@ -36,12 +36,12 @@ class DetectSerialPort:
         return -1
         # end
 
-    def findPortInUse(self, deviceName):
+    def findPortInUse( deviceName):
         try:
             if(deviceName == None):
                 raise ValueError
             else:
-                if(type(deviceName) != str)
+                if(type(deviceName) != str):
                     deviceName = str(deviceName)
 
                 portList = [list(p) for p in list(serial.tools.list_ports.comports())]  ##Find serial port in use
@@ -51,4 +51,14 @@ class DetectSerialPort:
         except ValueError:
             print("Invalid time out value. \nPass device name has no value!")
 
-    
+    def detectPort(self, deviceName):
+        try:
+            portInfo = DetectSerialPort.findPortInUse(deviceName)
+
+            if (portInfo == -1):
+                raise ValueError
+            else:
+                print("Detected port: " + str(portInfo[0]))
+                return portInfo[0]
+        except ValueError:
+            print("Port you are looking for was not found.")
