@@ -14,7 +14,7 @@ class SpecSerialPort:
                     0xAAB: "EndCmd",
                     0xAAC: "TelemetryCmd"}
 
-    __rwTimeOut = 1.5
+    __rwTimeOut = 1
 
     def __init__(self, _serialClass = serial.Serial(None, 115200) ):
         self._serialClass = _serialClass  #serial port class from PySerial
@@ -63,8 +63,22 @@ class SpecSerialPort:
                 break  # break loop - command not found
 
     @property
-    def getReadWriteTimeOut(self):
+    def ReadWriteTimeOut(self):
+        return self.__rwTimeOut
+
+    @ReadWriteTimeOut.getter
+    def ReadWriteTimeOut(self):
         print("Read/Write time out: " + str(self.__rwTimeOut))
+
+    @ReadWriteTimeOut.setter
+    def ReadWriteTimeOut(self, timeout):
+        try:
+            if (timeout < 0):
+                raise ValueError
+            else:
+                self.__rwTimeOut = timeout
+        except ValueError:
+            print("Invalid time out value. \nValue less than 0!")
 
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
@@ -81,4 +95,6 @@ test_object = SpecSerialPort(arduinoSerialPort)
 # print("After remove")
 # test_object.removeCommand("GetTemp")
 # test_object.getCommandDictionary
-test_object.getReadWriteTimeOut
+test_object.ReadWriteTimeOut
+test_object.ReadWriteTimeOut = -100
+test_object.ReadWriteTimeOut

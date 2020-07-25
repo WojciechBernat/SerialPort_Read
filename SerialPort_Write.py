@@ -98,11 +98,12 @@ def findArduino(deviceName, logFlag=0):
 
             if arduinoPort == -1:
                 raise ValueError("Returned incorrect value.")
+            else:
+                print("Found port:", arduinoPort)  # print log
+                return arduinoPort
         except ValueError:
             print("ValueError: no sought serial port detected.")
-        finally:
-            print("Found port:", arduinoPort)  # print log
-            return arduinoPort
+
     else:
         try:
             portList = [list(p) for p in list(serial.tools.list_ports.comports())]  ##Find serial port in use
@@ -112,10 +113,11 @@ def findArduino(deviceName, logFlag=0):
 
             if arduinoPort == -1:
                 raise ValueError("Returned incorrect value.")
+            else:
+                return arduinoPort
         except ValueError:
             print("ValueError: no serial port detected.")
-        finally:
-            return arduinoPort
+
     # End
 
 
