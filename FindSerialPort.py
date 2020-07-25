@@ -48,7 +48,6 @@ def findArduino(deviceName , logFlag = 1):
 def findArduinoPort(deviceName, argList):
     # Begin
     for i in argList:
-
         for j in i:
             if (j.find(deviceName) != -1):
                 return i

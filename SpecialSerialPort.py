@@ -32,7 +32,6 @@ class SpecialSerialPort:
     @property
     def readingBuffer(self):
         return self.__readingBuffer
-        print("Reading Buffer content: " + str(self.__readingBuffer))
 
     @readingBuffer.getter
     def readingBuffer(self):
@@ -42,7 +41,7 @@ class SpecialSerialPort:
     def readingBuffer(self, data):
         self.__readingBuffer.append(data)
 
-    @readingBuffer.setter
+    @readingBuffer.deleter
     def readingBuffer(self):
         self.__readingBuffer.clear()
 
@@ -133,3 +132,5 @@ class SpecialSerialPort:
                 self.__rwTimeOut = timeout
         except ValueError:
             print("Invalid time out value. \nValue less than 0!")
+
+

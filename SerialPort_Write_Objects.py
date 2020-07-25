@@ -1,6 +1,6 @@
 import time
 import serial
-#import serial.tools.list_ports
+from DetectSerialPort import DetectSerialPort
 from SpecialSerialPort import SpecialSerialPort
 
 
