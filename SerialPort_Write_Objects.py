@@ -9,6 +9,7 @@ from SpecialSerialPort import SpecialSerialPort
 test_object = SpecialSerialPort(arduinoSerialPort)
 
 test_object.commandDictionary
+print(test_object.getCommandKey("EndCmd"))
 
 # test_object.comDetect.toFind = 'Arduino'
 # test_object.comDetect.toFind

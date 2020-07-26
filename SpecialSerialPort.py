@@ -109,7 +109,20 @@ class SpecialSerialPort:
         __newCmdKey += 1
         self.__commandList[__newCmdKey] = newCmdName
 
-    
+    def getCommandKey(self, cmdName):
+        if type(cmdName) != str:
+            cmdName = str(cmdName)
+
+        notFoundCounter = 0;
+        dictLen = len(self.__commandList)
+        for key,val in self.__commandList.items():
+            if val == cmdName:
+                   return  key
+
+            notFoundCounter += 1
+            if notFoundCounter == (dictLen):
+                print("Command not found.")
+                break  # break loop - command not found
 
     def removeCommand(self, cmdName):
         if type(cmdName) != str:
