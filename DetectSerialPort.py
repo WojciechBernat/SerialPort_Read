@@ -6,7 +6,6 @@ class DetectSerialPort:
     def __init__(self):
         self.__toFind = "Arduino"
 
-
     @property
     def toFind(self):
         return self.__toFind
@@ -36,7 +35,7 @@ class DetectSerialPort:
         return -1
         # end
 
-    def findPortInUse( deviceName):
+    def findPortInUse(deviceName):
         try:
             if(deviceName == None):
                 raise ValueError

@@ -35,7 +35,7 @@ def executeCommand(serialPortInstance, cmd, readBuffer, readWriteTimeOut):
     serialPortInstance.flush()
     time.sleep(readWriteTimeOut)  # Dead time between write command and read slave's response
 
-    # readBuffer.append(serialPortInstance.read_until('\n', 32))
+    # readBuffer.append(serialClass.read_until('\n', 32))
 
     if cmd == arduinoTelemetryCmd:
         for x in range(4):

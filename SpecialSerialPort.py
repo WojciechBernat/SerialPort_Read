@@ -12,10 +12,17 @@ class SpecialSerialPort:
     __commandList ={0xAAA: "BeginCmd",
                     0xAAB: "EndCmd",
                     0xAAC: "TelemetryCmd"}
-    __rwTimeOut = 1
+    __rwTimeOut = 1.5
 
-    def __init__(self, _serialClass = serial.Serial(None, 115200) ):
-        self._serialClass = _serialClass  #serial port class from PySerial
+    def __init__(self, serialClass = serial.Serial(None, 115200) ):
+        try:
+            if (type(serialClass) != serial.Serial):
+                raise TypeError
+            else:
+                self.__serialPortInstance = serialClass  # serial port class from PySerial
+                print("Correct type of serial port instances.")
+        except:
+            print("Incorrect type of serial port instances.")
         self.__writeBuffer = []
         self.__readingBuffer = []
         self.__mainDataBuffer = []
@@ -26,7 +33,7 @@ class SpecialSerialPort:
 
     # print logs function
     def initLog(self):
-        print("Passed serial port object: " + str(self._serialClass))
+        print("Passed serial port object: " + str(self.__serialPortInstance))
 
     #reading buffer
     @property

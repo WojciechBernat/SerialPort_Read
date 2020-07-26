@@ -5,12 +5,12 @@ import serial
 class ComSerialPort:
     errorFlag = 0
 
-    def __init__(self, serialPortInstance, writeBuffer, readBuffer):
+    def __init__(self, serialClass, writeBuffer, readBuffer):
         try:
-            if (type(serialPortInstance) != serial.Serial):
+            if (type(serialClass) != serial.Serial):
                 raise TypeError
             else:
-                self.__serialPortInstance = serialPortInstance
+                self.__serialPortInstance = serialClass
                 print("Correct type of serial port instances.")
         except:
             print("Incorrect type of serial port instances.")
