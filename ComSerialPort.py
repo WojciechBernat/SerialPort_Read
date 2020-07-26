@@ -46,9 +46,3 @@ class ComSerialPort():
                 raise TypeError
         except:
             print("Incorrect type. It is not a list.")
-
-#test
-ard = serial.Serial('COM3', 115200)
-a = []
-b = []
-com = ComSerialPort(ard,a , b)

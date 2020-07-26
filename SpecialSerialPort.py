@@ -1,7 +1,7 @@
 import time
 #import serial.tools.list_ports
 import serial
-#from ComSerialPort import ComSerialPort
+from ComSerialPort import ComSerialPort
 
 class SpecialSerialPort:
     #constructor - init pyserial class
@@ -20,8 +20,8 @@ class SpecialSerialPort:
         self.__writeBuffer = []
         self.__readingBuffer = []
         self.__mainDataBuffer = []
-#        comLayer = ComSerialPort(serialPortInstance=self._serialClass,writeBuffer=self.__writeBuffer, readBuffer=self.__readingBuffer)
-#        print(comLayer)
+        comLayer = ComSerialPort(serialPortInstance=self._serialClass,writeBuffer=self.__writeBuffer, readBuffer=self.__readingBuffer)
+        print(comLayer)
     #main data buffer in place where date will be copy after receive
     #in this array you can add your specify buffer.
     # i.e. __mainDataBuffer = [temperature, voltage, speed, preasure]
