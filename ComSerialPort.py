@@ -5,7 +5,7 @@ import serial
 class ComSerialPort:
     errorFlag = 0
 
-    def __init__(self, serialClass, writeBuffer, readBuffer):
+    def __init__(self, serialClass, wri teBuffer, readBuffer):
         try:
             if (type(serialClass) != serial.Serial):
                 raise TypeError
