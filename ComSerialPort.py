@@ -1,9 +1,7 @@
 import serial
 
-
 # Communication with serial port class
-class ComSerialPort:
-    errorFlag = 0
+class ComSerialPort():
 
     def __init__(self, serialPortInstance, writeBuffer, readBuffer):
         try:

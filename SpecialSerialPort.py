@@ -1,6 +1,7 @@
 import time
 #import serial.tools.list_ports
 import serial
+#from ComSerialPort import ComSerialPort
 
 class SpecialSerialPort:
     #constructor - init pyserial class
@@ -14,12 +15,13 @@ class SpecialSerialPort:
                     0xAAC: "TelemetryCmd"}
     __rwTimeOut = 1
 
-    def __init__(self, _serialClass = serial.Serial(None, 115200) ):
-        self._serialClass = _serialClass  #serial port class from PySerial
+    def __init__(self, serialClass ):
+        self._serialClass = serialClass  #serial port class from PySerial
         self.__writeBuffer = []
         self.__readingBuffer = []
         self.__mainDataBuffer = []
-
+#        comLayer = ComSerialPort(serialPortInstance=self._serialClass,writeBuffer=self.__writeBuffer, readBuffer=self.__readingBuffer)
+#        print(comLayer)
     #main data buffer in place where date will be copy after receive
     #in this array you can add your specify buffer.
     # i.e. __mainDataBuffer = [temperature, voltage, speed, preasure]
