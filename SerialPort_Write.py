@@ -54,7 +54,7 @@ def executeCommand(serialPortInstance, cmd, readBuffer, readWriteTimeOut):
 def readToBuffer(buffer, serialPortInstance):
     # Begin
     if isinstance(buffer, list):
-        buffer.append(serialPortInstance.read_until('\n', 150))
+        buffer.append(serialPortInstance.read_until('\n', 32))
     else:
         buffer = serialPortInstance.readline()
     # End
