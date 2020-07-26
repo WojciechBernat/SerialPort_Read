@@ -1,9 +1,9 @@
 import serial
 
 # Communication with serial port class
-class ComSerialPort():
+class ComSerialPort:
 
-    def __init__(self, serialClass, wri teBuffer, readBuffer):
+    def __init__(self, serialClass, writeBuffer, readBuffer):
         try:
             if (type(serialClass) != serial.Serial):
                 raise TypeError
