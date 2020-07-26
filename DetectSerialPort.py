@@ -18,11 +18,11 @@ class DetectSerialPort:
     def toFind(self, arg):
         if(type(arg) != str):
             arg = str(arg)
-        self.__toFind.append(arg)
+        self.__toFind = arg
 
     @toFind.deleter
     def toFind(self):
-        self.__toFind.clear()
+        self.__toFind= ""
 
     #search list by passed device_Name to find port
     @staticmethod
