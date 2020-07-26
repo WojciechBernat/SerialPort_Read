@@ -6,7 +6,7 @@ from DetectSerialPort import DetectSerialPort
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
 from SpecialSerialPort import SpecialSerialPort
-# test_object = SpecialSerialPort(arduinoSerialPort)
+test_object = SpecialSerialPort(arduinoSerialPort)
 
 # test_object.initLog()
 # test_object.getReadingBuffer
