@@ -24,7 +24,7 @@ class ComSerialPort:
             print("Incorrect type of read/write buffers. Buffers must be list.")
 
     def readToBuffer(self):
-        self.__readBuffer.append(self.__serialPortInstance.read_until('\n', 32))
+        self.__readBuffer.append(self.__serialPortInstance.readline())
 
     def writeFromBuffer(self):
         self.__serialPortInstance.write(bytearray(ComSerialPort.lastListElement(self.__writeBuffer), 'utf-8'))

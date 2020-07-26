@@ -109,6 +109,8 @@ class SpecialSerialPort:
         __newCmdKey += 1
         self.__commandList[__newCmdKey] = newCmdName
 
+    
+
     def removeCommand(self, cmdName):
         if type(cmdName) != str:
             cmdName = str(cmdName)
@@ -133,7 +135,8 @@ class SpecialSerialPort:
 
     @readWriteTimeOut.getter
     def readWriteTimeOut(self):
-        print("Read/Write time out: " + str(self.__rwTimeOut))
+        #print("Read/Write time out: " + str(self.__rwTimeOut))
+        return self.__rwTimeOut
 
     @readWriteTimeOut.setter
     def readWriteTimeOut(self, timeout):
