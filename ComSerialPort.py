@@ -27,7 +27,7 @@ class ComSerialPort:
         self.__readBuffer.append(self.__serialPortInstance.read_until('\n', 32))
 
     def writeFromBuffer(self):
-        self.__serialPortInstance.write(ComSerialPort.lastListElement(self.__writeBuffer))
+        self.__serialPortInstance.write(bytearray(ComSerialPort.lastListElement(self.__writeBuffer), 'utf-8'))
         self.__serialPortInstance.flush()
 
     @staticmethod
