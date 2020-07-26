@@ -1,9 +1,7 @@
 import serial
 
-
 # Communication with serial port class
-class ComSerialPort:
-    errorFlag = 0
+class ComSerialPort():
 
     def __init__(self, serialClass, wri teBuffer, readBuffer):
         try:
@@ -48,9 +46,3 @@ class ComSerialPort:
                 raise TypeError
         except:
             print("Incorrect type. It is not a list.")
-
-#test
-ard = serial.Serial('COM3', 115200)
-a = []
-b = []
-com = ComSerialPort(ard,a , b)

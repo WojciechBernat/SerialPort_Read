@@ -1,10 +1,11 @@
 import time
 import serial
 from DetectSerialPort import DetectSerialPort
-from SpecialSerialPort import SpecialSerialPort
+
 
 
 arduinoSerialPort = serial.Serial('COM3', 115200)
+from SpecialSerialPort import SpecialSerialPort
 test_object = SpecialSerialPort(arduinoSerialPort)
 
 # test_object.initLog()
@@ -35,4 +36,5 @@ test_object = SpecialSerialPort(arduinoSerialPort)
 # test_object.commandDictionary
 # test_object.removeCommand("GetTemp")
 # test_object.commandDictionary
+
 
