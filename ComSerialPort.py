@@ -16,7 +16,7 @@ class ComSerialPort:
             print("Incorrect type of serial port instances.")
 
         try:
-            if (ComSerialPort.isList(writeBuffer) and ComSerialPort.isList(readBuffer)):
+            if ((ComSerialPort.isList(writeBuffer) or ComSerialPort.isList(readBuffer)) == 1):
                 self.__writeBuffer = writeBuffer
                 self.__readBuffer = readBuffer
                 print("Correct type of read/write buffers.")
@@ -29,7 +29,8 @@ class ComSerialPort:
         self.__readBuffer.append(self.__serialPortInstance.read_until('\n', 32))
 
     def writeFromBuffer(self):
-        self.__serialPortInstance.write(ComSerialPort.lasListElement(self.__writeBuffer))
+        self.__serialPortInstance.write(ComSerialPort.lastListElement(self.__writeBuffer))
+        self.__serialPortInstance.flush()
 
     @staticmethod
     def isList(array):
@@ -39,7 +40,7 @@ class ComSerialPort:
             return -1
 
     @staticmethod
-    def lasListElement(array):
+    def lastListElement(array):
         try:
             if (ComSerialPort.isList(array)):
                 return array[-1]
@@ -47,3 +48,9 @@ class ComSerialPort:
                 raise TypeError
         except:
             print("Incorrect type. It is not a list.")
+
+#test
+ard = serial.Serial('COM3', 115200)
+a = []
+b = []
+com = ComSerialPort(ard,a , b)
