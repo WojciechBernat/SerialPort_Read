@@ -36,11 +36,5 @@ test_object = SpecialSerialPort(arduinoSerialPort)
 # test_object.removeCommand("GetTemp")
 # test_object.commandDictionary
 
-test_object.mainDataBuffer
-test = [0,1,2,3,4,5]
-arr = ["ArgL", "ArgC"]
-test_object.mainDataBuffer = test
-test_object.mainDataBuffer = arr
-test_object.mainDataBuffer
-del test_object.mainDataBuffer
-test_object.mainDataBuffer
+arduino = DetectSerialPort()
+arduino.detectPort()

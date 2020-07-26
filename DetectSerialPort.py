@@ -4,7 +4,7 @@ import serial.tools.list_ports
 class DetectSerialPort:
 
     def __init__(self):
-        self.__toFind = ["Arduino", "ST-Link"]
+        self.__toFind = "Arduino"
 
 
     @property
@@ -51,9 +51,9 @@ class DetectSerialPort:
         except ValueError:
             print("Invalid time out value. \nPass device name has no value!")
 
-    def detectPort(self, deviceName):
+    def detectPort(self):
         try:
-            portInfo = DetectSerialPort.findPortInUse(deviceName)
+            portInfo = DetectSerialPort.findPortInUse(self.__toFind)
 
             if (portInfo == -1):
                 raise ValueError
@@ -62,3 +62,5 @@ class DetectSerialPort:
                 return portInfo[0]
         except ValueError:
             print("Port you are looking for was not found.")
+
+
